@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title></title>
+</head>
+<body>
+	<canvas id="canvasOne" width="500" height="300"></canvas>
+	<script type="text/javascript">
+		var theCanvas = document.getElementById('canvasOne');
+		var context = theCanvas.getContext('2d');
+		/* context.fillStyle = "#fffaa";
+		context.fillRect(0,0,500,300);
+		context.fillStyle = "#ffffff";
+		context.font = "20px Sans-Serif";
+		context.textBaseline = "top"
+		context.fillText("Hello Wrold", 195, 80);
+		var helloWorldImage = new Image();
+		helloWorldImage.onload = function(){
+			context.drawImage(helloWorldImage,160,130)
+		}
+		
+		helloWorldImage.src = "./img/logo.png"
+		
+		context.strokeStyle = "#f00";
+		context.strokeWidth = '5px'
+		context.strokeRect(5,5,490,290)
+		 */
+		// guesses  初始化
+		var guesses = 0;
+		// 初始化 message
+		var startVal = 'a'
+		var endVal = 'z'
+		var message = "获取字母 " + startVal +"  到 " + endVal + " 之间的目标值 "
+		// 初始化letters
+		var letters = [
+			"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
+			"p","q","r","s","t","u","v","w","x","y","z"
+		];
+		// 初始化today
+		var today = new Date();
+		today = today.getFullYear() + "-" +
+		addZore((today.getMonth()) + 1 ) + "-" +
+		addZore(today.getDate()) + " \t\t " +
+		addZore(today.getHours()) + ":" +
+		addZore(today.getMinutes()) + ":" + addZore(today.getSeconds()) + '\t\t 中国时间'
+		
+		function addZore(time){
+			time = time.toString().length > 1 ? time : "0" + time
+			return time;
+		}
+		//初始化letterToCuess
+		var letterToCuess = "";
+		// 初始化
+		var higherOrLower = "";
+		var lettersGuessed;
+		var gameOver = false;
+		function initGame(){
+			// 随机获取letters中的一个数字
+			var letterIndex = Math.floor(Math.random()*letters.length);
+			//获取当前随机获取的值 
+			letterToCuess = letters[letterIndex];
+			guesses = 0;
+			//将lettersGuessed为数组
+			lettersGuessed = [];
+			// 这是gameover
+			gameOver = false;
+			// keyup 事件发生时eventKeyPressed
+			window.addEventListener('keyup',eventKeyPressed,true);
+			
+			
+			drawScreen();
+			
+			function drawScreen(letterPressed){
+					// 填充颜色为
+					context.fillStyle = "#ffffaa";
+					// 填充内容颜色
+					context.fillRect(0,0,500,300);
+					
+					// 填充描边颜色
+					context.strokeStyle = "#000000";
+					// 画填充方框位置及大小
+					context.strokeRect(5,5,490,290);
+					// 设置基线位置
+					context.textBaseline = 'top';
+					
+					// 设置填充颜色
+					context.fillStyle = '#000000';
+					// 设置字体大小入字体
+					context.font = "14px Sans-Serif";
+					// 设置填充文本
+					context.fillText(today,166,10);
+					
+					// 设置填充样式
+					context.fillStyle = "#ff0000";
+					// 设置字体字体大小及字体
+					context.font = "14px Sans-Serif";
+					//设置填充字体及位置
+					context.fillText('提示： '+message,165,30);
+					
+					// 设置填充颜色
+					context.fillStyle = "#109910";
+					// 设置字体字体大小及字体
+					context.font = "16px Sans-Serif";
+					//设置填充字体及位置
+					context.fillText('键入字母次数:' + guesses,215,50)
+					
+					// 设置填充颜色
+					context.fillStyle = "#000000";
+					// 设置字体字体大小及字体
+					context.font = '16px Sans-Serif';
+					//设置填充字体及位置
+					context.fillText("键入的字母大于或小于目标::" + higherOrLower ,150,125);
+					
+					// 设置填充颜色
+					context.fillStyle = "#ff0000";
+					// 设置字体字体大小及字体
+					context.fillText("已键入字母:" +
+					//设置填充字体及位置
+					lettersGuessed.toString(),10,260);
+					if(gameOver){
+						// 设置填充颜色
+						context.fillStyle = "#ff0000";
+						// 设置字体字体大小及字体
+						context.font = "40px _ sans-serif";
+						//设置填充字体及位置
+						context.fillText("成功找到目标字母 " + letterPressed.toUpperCase(), 90,180)
+					}
+				}
+			
+			
+			
+			function eventKeyPressed(e){
+				var letterPressed
+				// gameOver不为真是
+				if(!gameOver){
+					if(e.keyCode > 90 ||  e.keyCode < 65){ return  }
+					letterPressed = letters[e.keyCode-65];
+					
+					// 小写
+					letterPressed = letterPressed.toLowerCase();
+					
+					//添加进数组a
+					if(/* /[a-z]/i.test(letterPressed) && */!((lettersGuessed.toString().indexOf(letterPressed)) > -1)){
+						guesses += 1;
+						lettersGuessed.push(letterPressed);
+					}
+					
+					if(letterPressed == letterToCuess){
+						gameOver = true;
+					}else{
+						letterIndex = letters.indexOf(letterToCuess);
+						guessIndex = letters.indexOf(letterPressed)
+						if(guessIndex < 0){
+							higherOrLower = "键入不是一个正确的值";
+						}else if(guessIndex > letterIndex){
+							
+							endVal = endVal < letterPressed ? endVal : letterPressed;
+							message = "获取字母 " + startVal +"  到 " + endVal + " 之间的目标值 ";
+							higherOrLower = "大于";
+						}else{
+							startVal =  startVal > letterPressed ? startVal : letterPressed;
+							message = "获取字母 " + startVal +"  到 " + endVal + " 之间的目标值 ";
+							higherOrLower = "小于";
+						}
+					};
+						drawScreen(letterPressed);
+				}
+			}
+		}
+		
+		initGame()
+	</script>
+</body>
+</html>
