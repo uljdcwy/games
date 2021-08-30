@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas width="500px" height="300px"></canvas>
+		<input type="text" id="fontSizeEl">
+		<input type="text" id="fontFaceEl">
+		<input type="text" id="fontWeightEl">
+		<input type="text" id="fontStyleEl">
+		<script type="text/javascript">
+			function setfontFn(fontsize,fontFace,fontWeight,fontStyle){
+				var font = {
+					fontSize: fontsize || '50',
+					fontFace: fontFace || 'serif',
+					fontWeight: fontWeight || 'normal',
+					fontStyle: fontStyle || 'normal'	
+				};
+			}
+			
+			var o = {
+				fontSizeEl: document.getElementById('fontSizeEl'),
+				fontFaceEl: document.getElementById('fontFaceEl'),
+				fontWeightEl: document.getElementById('fontWeightEl'),
+				fontFaceEl: document.getElementById('fontFaceEl')
+			}
+			
+			for(var i in o){
+				o[i].addEventListener('change',setfontFn('12px','serif','bold'))
+			}
+			
+		</script>
+	</body>
+</html>
