@@ -4,9 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title></title>
+	<style type="text/css">
+		canvas{
+			display: block;
+			width: 420px;
+			margin: 0 auto;
+		}
+	</style>
 </head>
 <body>
-	<canvas id="canvasOne" width="500" height="300"></canvas>
+	<canvas id="canvasOne" width="420" height="700"></canvas>
 	<script type="text/javascript">
 		var theCanvas = document.getElementById('canvasOne');
 		var context = theCanvas.getContext('2d');
@@ -72,16 +79,18 @@
 			
 			drawScreen();
 			
+			theCanvas.addEventListener('click',eventKeyPressed)
+			
 			function drawScreen(letterPressed){
 					// 填充颜色为
 					context.fillStyle = "#ffffaa";
 					// 填充内容颜色
-					context.fillRect(0,0,500,300);
+					context.fillRect(0,0,420,500);
 					
 					// 填充描边颜色
 					context.strokeStyle = "#000000";
 					// 画填充方框位置及大小
-					context.strokeRect(5,5,490,290);
+					context.strokeRect(5,5,410,490);
 					// 设置基线位置
 					context.textBaseline = 'top';
 					
@@ -90,28 +99,28 @@
 					// 设置字体大小入字体
 					context.font = "14px Sans-Serif";
 					// 设置填充文本
-					context.fillText(today,166,10);
+					context.fillText(today,120,10);
 					
 					// 设置填充样式
 					context.fillStyle = "#ff0000";
 					// 设置字体字体大小及字体
 					context.font = "14px Sans-Serif";
 					//设置填充字体及位置
-					context.fillText('提示： '+message,165,30);
+					context.fillText('提示： '+message,112,30);
 					
 					// 设置填充颜色
 					context.fillStyle = "#109910";
 					// 设置字体字体大小及字体
 					context.font = "16px Sans-Serif";
 					//设置填充字体及位置
-					context.fillText('键入字母次数:' + guesses,215,50)
+					context.fillText('键入字母次数:' + guesses,165,50)
 					
 					// 设置填充颜色
 					context.fillStyle = "#000000";
 					// 设置字体字体大小及字体
 					context.font = '16px Sans-Serif';
 					//设置填充字体及位置
-					context.fillText("键入的字母大于或小于目标::" + higherOrLower ,150,125);
+					context.fillText("键入的字母大于或小于目标::" + higherOrLower ,110,125);
 					
 					// 设置填充颜色
 					context.fillStyle = "#ff0000";
@@ -119,53 +128,97 @@
 					context.fillText("已键入字母:" +
 					//设置填充字体及位置
 					lettersGuessed.toString(),10,260);
-					if(gameOver){
+					console.log(typeof letterPressed);
+					if(gameOver && typeof letterPressed === 'string'){
 						// 设置填充颜色
 						context.fillStyle = "#ff0000";
 						// 设置字体字体大小及字体
 						context.font = "40px _ sans-serif";
 						//设置填充字体及位置
-						context.fillText("成功找到目标字母 " + letterPressed.toUpperCase(), 90,180)
+						context.fillText("成功找到目标字母 " + letterPressed.toUpperCase(), 30,180)
 					}
+					
+					var y = 0;
+					for(var i = 0; i < letters.length; i += 1){	
+						if(((i % 10) === 0) && i) {y += 1;}	
+						(function(i,y){
+							context.beginPath();
+							var x = (15 + (i % 10) * 40);
+							var y = (320 + y * 40);
+							
+							// 填充颜色为
+							context.fillStyle = "#ffffff";
+							// 填充内容颜色
+							context.fillRect(x,y,30,30);
+							
+							// 设置填充颜色
+							context.fillStyle = '#000000';
+							// 设置字体大小入字体
+							context.font = "20px Sans-Serif";
+							context.textBaseline = "top";
+							
+							// 填充描边颜色
+							context.strokeStyle = "#000000";
+							// 画填充方框位置及大小
+							context.rect(x,y,30,30);
+							context.stroke();
+							
+							if(typeof letterPressed !== 'string' && letterPressed && context.isPointInPath(letterPressed.x,letterPressed.y)){
+									eventKeyPressed({keyCode: i + 65})
+							}
+							
+							// 设置填充文本
+							context.textBaseline = "top";
+							context.font = "20px Arial";
+							context.fillText(letters[i].toUpperCase(),x+7,y+6);
+						})(i,y)
+					};
+					context.closePath();
+					
 				}
-			
+				
 			
 			
 			function eventKeyPressed(e){
 				var letterPressed
 				// gameOver不为真是
 				if(!gameOver){
-					if(e.keyCode > 90 ||  e.keyCode < 65){ return  }
-					letterPressed = letters[e.keyCode-65];
-					
-					// 小写
-					letterPressed = letterPressed.toLowerCase();
-					
-					//添加进数组a
-					if(/* /[a-z]/i.test(letterPressed) && */!((lettersGuessed.toString().indexOf(letterPressed)) > -1)){
-						guesses += 1;
-						lettersGuessed.push(letterPressed);
-					}
-					
-					if(letterPressed == letterToCuess){
-						gameOver = true;
+					if(e && e.keyCode > 90 ||  e.keyCode < 65){ return  }
+					if(e && e.toString() === "[object PointerEvent]"){
+						letterPressed = {x: e.offsetX,y:e.offsetY};
 					}else{
-						letterIndex = letters.indexOf(letterToCuess);
-						guessIndex = letters.indexOf(letterPressed)
-						if(guessIndex < 0){
-							higherOrLower = "键入不是一个正确的值";
-						}else if(guessIndex > letterIndex){
-							
-							endVal = endVal < letterPressed ? endVal : letterPressed;
-							message = "获取字母 " + startVal +"  到 " + endVal + " 之间的目标值 ";
-							higherOrLower = "大于";
-						}else{
-							startVal =  startVal > letterPressed ? startVal : letterPressed;
-							message = "获取字母 " + startVal +"  到 " + endVal + " 之间的目标值 ";
-							higherOrLower = "小于";
+						
+						letterPressed = letters[e.keyCode-65];
+						
+						// 小写
+						letterPressed = letterPressed.toLowerCase();
+						
+						//添加进数组a
+						if(/* /[a-z]/i.test(letterPressed) && */!((lettersGuessed.toString().indexOf(letterPressed)) > -1)){
+							guesses += 1;
+							lettersGuessed.push(letterPressed);
 						}
-					};
-						drawScreen(letterPressed);
+						
+						if(letterPressed == letterToCuess){
+							gameOver = true;
+						}else{
+							letterIndex = letters.indexOf(letterToCuess);
+							guessIndex = letters.indexOf(letterPressed)
+							if(guessIndex < 0){
+								higherOrLower = "键入不是一个正确的值";
+							}else if(guessIndex > letterIndex){
+								
+								endVal = endVal < letterPressed ? endVal : letterPressed;
+								message = "获取字母 " + startVal +"  到 " + endVal + " 之间的目标值 ";
+								higherOrLower = "大于";
+							}else{
+								startVal =  startVal > letterPressed ? startVal : letterPressed;
+								message = "获取字母 " + startVal +"  到 " + endVal + " 之间的目标值 ";
+								higherOrLower = "小于";
+							}
+						};
+					}
+					drawScreen(letterPressed);
 				}
 			}
 		}
