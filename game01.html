@@ -176,19 +176,22 @@
 				
 			
 			
-			theCanvas.onclick = theCanvas.onkeyup = theCanvas.ontouchstart = window.eventKeyPressed = function (e){
+			theCanvas.onclick = window.onkeyup = theCanvas.ontouchend = window.eventKeyPressed = function (e){
 				var letterPressed
-				// gameOver不为真是
+				
+				// gameOver不为真
 				if(!gameOver){
-					if(e && e.keyCode > 90 ||  e.keyCode < 65){ return  }
-					if(e && e.toString() === "[object PointerEvent]"){
-						letterPressed = {x: e.offsetX,y:e.offsetY};
+					if(!e.keyCode || e.keyCode > 90 ||  e.keyCode < 65){
+						console.log(e.keyCode);
+						console.log(e.type);
+						letterPressed = {x: e.offsetX,y:e.offsetY}
 					}else{
-						
+						console.log(e.keyCode)
 						letterPressed = letters[e.keyCode-65];
 						
+						console.log(letterPressed);
 						// 小写
-						letterPressed = letterPressed.toLowerCase();
+						letterPressed = letterPressed.toUpperCase();
 						
 						//添加进数组a
 						if(/* /[a-z]/i.test(letterPressed) && */!((lettersGuessed.toString().indexOf(letterPressed)) > -1)){
@@ -196,25 +199,24 @@
 							lettersGuessed.push(letterPressed);
 						}
 						
-						if(letterPressed == letterToCuess){
+						if(letterPressed == letterToCuess.toUpperCase()){
 							gameOver = true;
 						}else{
 							letterIndex = letters.indexOf(letterToCuess);
-							guessIndex = letters.indexOf(letterPressed)
-							if(guessIndex < 0){
-								higherOrLower = "键入不是一个正确的值";
-							}else if(guessIndex > letterIndex){
+							guessIndex = letters.indexOf(letterPressed.toLowerCase());
+							if(guessIndex > letterIndex){
 								
-								endVal = endVal < letterPressed ? endVal : letterPressed;
+								endVal = endVal < letterPressed ? endVal : letterPressed.toLowerCase();
 								message = "获取字母 " + startVal +"  到 " + endVal + " 之间的目标值 ";
 								higherOrLower = "大于";
 							}else{
-								startVal =  startVal > letterPressed ? startVal : letterPressed;
+								startVal =  startVal > letterPressed.toLowerCase() ? startVal.toLowerCase() : letterPressed.toLowerCase();
 								message = "获取字母 " + startVal +"  到 " + endVal + " 之间的目标值 ";
 								higherOrLower = "小于";
 							}
 						};
 					}
+					
 					drawScreen(letterPressed);
 				}
 			}
