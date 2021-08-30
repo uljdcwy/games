@@ -15,7 +15,8 @@
 <body>
 	<canvas id="canvasOne" width="420" height="700"></canvas>
 	<script type="text/javascript">
-		var theCanvas = document.getElementById('canvasOne');
+		var theCanvas = document.getElementsByTagName('canvas')[0];
+		console.log(theCanvas)
 		var context = theCanvas.getContext('2d');
 		// guesses  初始化
 		var guesses = 0;
@@ -56,15 +57,9 @@
 			lettersGuessed = [];
 			// 这是gameover
 			gameOver = false;
-			// keyup 事件发生时eventKeyPressed
-			window.addEventListener('keyup',eventKeyPressed,true);
 			
 			
 			drawScreen();
-			
-			theCanvas.addEventListener('click',eventKeyPressed)
-			
-			
 			
 			
 			/* context.fillStyle = "#fffaa";
@@ -84,8 +79,6 @@
 			context.strokeWidth = '5px'
 			context.strokeRect(5,5,490,290)
 			 */
-			theCanvas.addEventListener('touchstart',eventKeyPressed)
-			theCanvas.ontouchstart = eventKeyPressed;
 			function drawScreen(letterPressed){
 					// 填充颜色为
 					context.fillStyle = "#ffffaa";
@@ -183,8 +176,7 @@
 				
 			
 			
-			function eventKeyPressed(e){
-				alert(e)
+			theCanvas.onclick = theCanvas.onkeyup = theCanvas.ontouchstart = window.eventKeyPressed = function (e){
 				var letterPressed
 				// gameOver不为真是
 				if(!gameOver){
