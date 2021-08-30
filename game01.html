@@ -84,7 +84,7 @@
 			context.strokeWidth = '5px'
 			context.strokeRect(5,5,490,290)
 			 */
-			theCanvas.addEventListener('touchend',eventKeyPressed)
+			theCanvas.addEventListener('touchstart',eventKeyPressed)
 			function drawScreen(letterPressed){
 					// 填充颜色为
 					context.fillStyle = "#ffffaa";
@@ -132,7 +132,6 @@
 					context.fillText("已键入字母:" +
 					//设置填充字体及位置
 					lettersGuessed.toString(),10,260);
-					console.log(typeof letterPressed);
 					if(gameOver && typeof letterPressed === 'string'){
 						// 设置填充颜色
 						context.fillStyle = "#ff0000";
@@ -184,6 +183,7 @@
 			
 			
 			function eventKeyPressed(e){
+				console.log(e)
 				var letterPressed
 				// gameOver不为真是
 				if(!gameOver){
