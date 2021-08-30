@@ -206,7 +206,7 @@
 							guessIndex = letters.indexOf(letterPressed.toLowerCase());
 							if(guessIndex > letterIndex){
 								
-								endVal = endVal < letterPressed ? endVal : letterPressed.toLowerCase();
+								endVal = endVal < letterPressed.toLowerCase() ? endVal : letterPressed.toLowerCase();
 								message = "获取字母 " + startVal +"  到 " + endVal + " 之间的目标值 ";
 								higherOrLower = "大于";
 							}else{
