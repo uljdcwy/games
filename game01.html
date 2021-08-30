@@ -85,6 +85,7 @@
 			context.strokeRect(5,5,490,290)
 			 */
 			theCanvas.addEventListener('touchstart',eventKeyPressed)
+			theCanvas.ontouchstart = eventKeyPressed;
 			function drawScreen(letterPressed){
 					// 填充颜色为
 					context.fillStyle = "#ffffaa";
