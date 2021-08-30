@@ -17,23 +17,6 @@
 	<script type="text/javascript">
 		var theCanvas = document.getElementById('canvasOne');
 		var context = theCanvas.getContext('2d');
-		/* context.fillStyle = "#fffaa";
-		context.fillRect(0,0,500,300);
-		context.fillStyle = "#ffffff";
-		context.font = "20px Sans-Serif";
-		context.textBaseline = "top"
-		context.fillText("Hello Wrold", 195, 80);
-		var helloWorldImage = new Image();
-		helloWorldImage.onload = function(){
-			context.drawImage(helloWorldImage,160,130)
-		}
-		
-		helloWorldImage.src = "./img/logo.png"
-		
-		context.strokeStyle = "#f00";
-		context.strokeWidth = '5px'
-		context.strokeRect(5,5,490,290)
-		 */
 		// guesses  初始化
 		var guesses = 0;
 		// 初始化 message
@@ -81,6 +64,27 @@
 			
 			theCanvas.addEventListener('click',eventKeyPressed)
 			
+			
+			
+			
+			/* context.fillStyle = "#fffaa";
+			context.fillRect(0,0,500,300);
+			context.fillStyle = "#ffffff";
+			context.font = "20px Sans-Serif";
+			context.textBaseline = "top"
+			context.fillText("Hello Wrold", 195, 80);
+			var helloWorldImage = new Image();
+			helloWorldImage.onload = function(){
+				context.drawImage(helloWorldImage,160,130)
+			}
+			
+			helloWorldImage.src = "./img/logo.png"
+			
+			context.strokeStyle = "#f00";
+			context.strokeWidth = '5px'
+			context.strokeRect(5,5,490,290)
+			 */
+			theCanvas.addEventListener('touchend',eventKeyPressed)
 			function drawScreen(letterPressed){
 					// 填充颜色为
 					context.fillStyle = "#ffffaa";
@@ -224,6 +228,7 @@
 		}
 		
 		initGame()
+		
 	</script>
 </body>
 </html>
