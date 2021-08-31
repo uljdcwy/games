@@ -14,8 +14,67 @@
 		<script type="text/javascript">
 				var canvas = document.getElementsByTagName('canvas')[0];
 				var ctx = canvas.getContext('2d');
-				
-				
+				function createColorFill(attrObj,ctx,cb){
+					var tempColor,attrObj;
+					attrObj = attrObj || null
+					if(attrObj.fillType === 'colorFill'){
+						tempColor = attrObj.textFillColor;
+					}else if(attrObj.fillType === 'linearGradient'){
+						var gradient = ctx.createLinearGradient(attrObj.xPositiontextWidth/2
+						,attrObj.yPosition,attrObj.textWidth,attrObj.yPosition);
+						gradient.addColorStop(0,attrObj.textFillColor[0]);
+						gradient.addColorStop(0.6,attrObj.textFillColor[1]);
+						tempColor = gradient;
+					}else if(attrObj.fillType === 'radialGradient'){
+						var gradient = ctx.createRadialGradient(attrObj.xPosition,attrObj.yPosition,
+						1,attrObj.xPosition,attrObj.yPosition,attrObj.textWidth);
+						gradient.addColorStop(0,attrObj.textFillColor[0]);
+						gradient.addColorStop(0.6,attrObj.textFillColor[1]);
+						tempColor = gradient;
+					}else if(attrObj.fillType === 'pattern'){
+						tempColor = ctx.createPattern(attrObj.pattern,'repeat')
+					}else{
+						tempColor = attrObj.textFillColor[0];
+					};
+					
+					ctx.fillStyle = tempColor;
+					console.log(tempColor,ctx.fillStyle)
+					/* 	objJSON = {
+							fillType: String,
+							textFillColor: String || Array,
+							xPositiontextWidth: Number,
+							yPosition: Number,
+							textWidth: Number,
+							xPosition: Number,
+							pattern: Object // image Obj
+						} */
+						cb && cb()
+				}
+				ctx.font = "20px sans-serif"
+				ctx.textBaseline = "top"
+				var msg = "测试";
+				//文字宽度
+				var textWidth = ctx.measureText(msg).width;
+				// 文字高度
+				console.log(ctx.measureText(msg).fontBoundingBoxDescent);
+				var img = new Image();
+				img.src="./img/logo.png"
+				img.onload = function(){
+					
+					createColorFill({
+								fillType: 'pattern',
+								/*textFillColor: ['#ff0','#000'] ||  Array,
+								xPositiontextWidth: textWidth,
+								yPosition: 30,
+								xPosition: textWidth/2,*/
+								pattern: img,//Object  image Obj 
+								//textWidth: textWidth,
+							},ctx);
+					ctx.fillText(msg,10,10)
+				}
+/* 				
+
+
 				ctx.font = "60px sans-serif";
 				ctx.textBaseline = "top"
 				var msg = "测试文字线向";
@@ -49,7 +108,7 @@
 					// 以图片来填充颜色
 					ctx.fillStyle = gradient;
 					ctx.fillText(msg,0,200);
-				}
+				} */
 		</script>
 	</body>
 </html>
