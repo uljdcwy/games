@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			canvas{
+				background-color: red;
+			}
+		</style>
+	</字体风格head>
+	<body>
+		<canvas width="500px" height="300px"></canvas>
+		<script type="text/javascript">
+				var canvas = document.getElementsByTagName('canvas')[0];
+				var ctx = canvas.getContext('2d');
+				
+				
+				ctx.font = "60px sans-serif";
+				ctx.textBaseline = "top"
+				var msg = "测试文字渐弯";
+				var textWidth = ctx.measureText(msg).width;
+				var gradient = ctx.createLinearGradient(0,0,textWidth,0);
+				gradient.addColorStop(0, "#000");
+				gradient.addColorStop(0.5, "#ff0");
+				ctx.fillStyle = gradient;
+				ctx.fillText(msg,0,0);
+				
+				
+				ctx.font = "60px sans-serif";
+				ctx.textBaseline = "top"
+				var msg = "测试文字渐弯";
+				var textWidth = ctx.measureText(msg).width;
+				var gradient = ctx.createRadialGradient(150,150,50,150,150,300);
+				gradient.addColorStop(0, "#000");
+				gradient.addColorStop(0.5, "#ff0");
+				ctx.fillStyle = gradient;
+				ctx.fillText(msg,0,100);
+				
+				var img = new Image();
+				img.src = './img/logo.png';
+				img.onload = function(){
+					ctx.font = "60px sans-serif";
+					ctx.textBaseline = "top"
+					var msg = "测试文字渐弯";
+					var gradient = ctx.createPattern(img,'repeat');
+					ctx.fillStyle = gradient;
+					ctx.fillText(msg,0,200);
+				}
+		</script>
+	</body>
+</html>
