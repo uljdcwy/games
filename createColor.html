@@ -18,22 +18,24 @@
 				
 				ctx.font = "60px sans-serif";
 				ctx.textBaseline = "top"
-				var msg = "测试文字渐弯";
+				var msg = "测试文字线向";
 				var textWidth = ctx.measureText(msg).width;
 				var gradient = ctx.createLinearGradient(0,0,textWidth,0);
 				gradient.addColorStop(0, "#000");
 				gradient.addColorStop(0.5, "#ff0");
+				// 以线向来填充颜色
 				ctx.fillStyle = gradient;
 				ctx.fillText(msg,0,0);
 				
 				
 				ctx.font = "60px sans-serif";
 				ctx.textBaseline = "top"
-				var msg = "测试文字渐弯";
+				var msg = "测试文字径向渐弯";
 				var textWidth = ctx.measureText(msg).width;
 				var gradient = ctx.createRadialGradient(150,150,50,150,150,300);
 				gradient.addColorStop(0, "#000");
 				gradient.addColorStop(0.5, "#ff0");
+				// 以径向渐变来填充颜色
 				ctx.fillStyle = gradient;
 				ctx.fillText(msg,0,100);
 				
@@ -42,8 +44,9 @@
 				img.onload = function(){
 					ctx.font = "60px sans-serif";
 					ctx.textBaseline = "top"
-					var msg = "测试文字渐弯";
+					var msg = "测试文字图片渐弯";
 					var gradient = ctx.createPattern(img,'repeat');
+					// 以图片来填充颜色
 					ctx.fillStyle = gradient;
 					ctx.fillText(msg,0,200);
 				}
