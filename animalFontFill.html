@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas id="animalFontFill" width="500" height="300"></canvas>
+		<script type="text/javascript">
+			var canvas = document.getElementById("animalFontFill");
+			var ctx = canvas.getContext("2d");
+			
+			function AnimalFontFill(msg,background,xPosition,yPosition){
+				var backgrond = backgrond,colorStops = new Array(
+				{color: "#ff0000",stopPercent: 0},
+				{color: "#ffff00",stopPercent: 25},
+				{color: "#00ff00",stopPercent: 50},
+				{color: "#0000ff",stopPercent: 70},
+				{color: "#ff00ff",stopPercent: 100},
+				{color: "#ff0000",stopPercent: 1},
+				
+				),msg = msg || "null",xPosition = xPosition || 0,yPosition = yPosition;
+				
+				this.getMsg = function(){
+					return msg;
+				};
+				
+				this.setMsg = function(msg){
+					msg = msg;
+					return this;
+				}
+				
+				this.getXPosition = function(){
+					return xPosition;
+				}
+				
+				this.getYPosition = function(){
+					return yPosition;
+				}
+				
+				this.setXPosition = function(xPosition){
+					xPosition = xPosition;
+					return this;
+				}
+				
+				this.setYPosition = function(){
+					yPosition = yPosition;
+					return this;
+				}
+				
+				this.setBackground = function(backgrond){
+					backgrond = backgrond;
+					return this;
+				}
+				this.getBackground = function(){
+					return backgrond;
+				}
+				
+				this.setColorStops = function(arr){
+					colorStops = arr;
+					return this;
+				}
+				
+				this.getColorStops = function(){
+					var i;
+					for(i=0;i<colorStops.length;i+=1 ){
+						/* Object.defineProperties(colorStops[i],{
+							"color": {
+							writable: false
+							},
+							"stopPercent": {
+							writable: false
+							}
+						}) */
+					}
+					return colorStops;
+				}
+			};
+			
+			AnimalFontFill.prototype.drawScreen = function(ctx,o){
+				ctx.clearRect(0,0,o.width,o.height);
+				
+				var gradient = ctx.createLinearGradient(
+					o.width,
+					0,
+					o.width,
+					o.height
+				),tempColorStop,tempColor,tempStopPercent,i,colorArr = this.getColorStops(),
+				message = this.getMsg(),xPosition = this.getXPosition(),
+				yPosition = this.getYPosition(),clg = colorArr.length;
+				for(i = 0;i < clg; i++){
+					tempColorStop = colorArr[i];
+					tempColor = tempColorStop.color;
+					tempStopPercent = tempColorStop.stopPercent;
+					tempStopPercent = tempStopPercent / 100;
+					gradient.addColorStop(tempStopPercent,tempColor);
+					colorArr[i].stopPercent = colorArr[i+1] ? colorArr[i+1].stopPercent : colorArr[0].stopPercent;
+				}
+				ctx.textBaseline = "top";
+				ctx.fillStyle = gradient;
+				ctx.font = "50px Arial";
+				ctx.fillText(message,xPosition,yPosition);
+			};
+			
+			AnimalFontFill.prototype.gameLoop = function(ctx,o){
+				var that = this;
+				setTimeout(function(){
+					that.gameLoop(ctx,o,that);
+				},200);
+				this.drawScreen(ctx,o);
+				return
+			}
+			
+			window.animal = animal = new AnimalFontFill("H5CANVAS","#000000",10,10);
+			
+			
+			animal.gameLoop(ctx,{
+				width: 500,height: 300
+			});
+			
+			
+		</script>
+	</body>
+</html>
