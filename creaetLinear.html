@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			canvas{
+				background-color: red;
+			}
+		</style>
+	</字体风格head>
+	<body>
+		<canvas width="500px" height="300px"></canvas>
+		<input type="text" id="fontSizeEl" placeholder="字体大小">
+		<input type="text" id="fontFaceEl" placeholder="fontFace">
+		<input type="text" id="fontWeightEl" placeholder="字体粗细">
+		<input type="text" id="fontStyleEl" placeholder="字体风格">
+		<input type="range" id="alphaChangeEl" placeholder="透明度" max=100 min = 0>
+		<script type="text/javascript">
+				var o = {
+					fontSize: document.getElementById('fontSizeEl'),
+					fontFace: document.getElementById('fontFaceEl'),
+					fontWeight: document.getElementById('fontWeightEl'),
+					fontStyle: document.getElementById('fontStyleEl')
+				}
+				var canvas = document.getElementsByTagName('canvas')[0];
+				var ctx = canvas.getContext('2d');
+			function setFontFn(ctx,o,drawfont){
+				var font = {
+					'fontSize':'22',
+					'fontFace': 'sans-serif',
+					'fontWeight': 'bold',
+					'fontStyle': 'normal'	
+				},drawFontStyle;
+				if(!drawFontStyle){
+					for(var i in o){
+						(function(i){						
+								o[i].onchange = drawFontStyle =  function (e){
+									ctx.clearRect(0,0,500,300)
+									font[i] = this.value || font[i];
+									ctx.font = font.fontStyle + " " + font.fontWeight + " " +  font.fontSize + "px " + font.fontFace;
+									drawfont(ctx);
+								}
+							})(i)
+					}
+				}
+				drawFontStyle();
+				drawfont(ctx);
+			}
+			
+			
+			
+			function drawfont(ctx){
+				ctx.fillStyle = "#ffff00";
+				ctx.fillText("这是一个填充",200,200)
+				ctx.strokeText("这是一个填充",200,200)
+			}
+			
+			document.getElementById('alphaChangeEl').onchange = function(){
+				ctx.clearRect(0,0,500,300)
+				ctx.globalAlpha = (this.value/100);
+				ctx.shadowColor = "#ffff00";
+				ctx.shadowOffsetX = 5;
+				ctx.shadowOffsetY = 5;
+				ctx.shadowBlur = 2;
+				setFontFn(ctx,o,drawfont);
+				console.log((this.value/100))
+			}
+		</script>
+	</body>
+</html>
