@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        window.addEventListener('load', function(){
+            var context = eventWindowLoaded("canvas");
+            var ImgObj = new CreateImg("./img/logo.png");
+            var img = ImgObj.getImg();
+            context.fillStyle = "#f00";
+            context.fillRect(0,0,500,500)
+            img.onload = function (){
+                context.drawImage(img,0,0)
+            }
+
+        }, false);
+
+        window.addEventListener('load', function(){
+            var context = eventWindowLoaded("canvas1");
+            var ImgObj = new CreateImg("./img/logo.png");
+            var img = ImgObj.getImg();
+            context.fillStyle = "#000";
+            context.fillRect(0,0,500,500)
+            img.onload = function (){
+                context.drawImage(img,0,0,60,60)
+            }
+        }, false);
+
+        window.addEventListener('load', function(){
+            var context = eventWindowLoaded("canvas2");
+            var ImgObj = new CreateImg("./img/logo.png");
+            var img = ImgObj.getImg();
+            context.fillStyle = "#999";
+            context.fillRect(0,0,500,500)
+            img.onload = function (){
+                context.drawImage(img,60,60,200,200,100,100,100,100)
+            }
+        }, false);
+
+        window.addEventListener('load', function(){
+            var context = eventWindowLoaded("canvas3");
+            var ImgObj = new CreateImg("./img/logo.png");
+            var img = ImgObj.getImg();
+            context.fillStyle = "#f00";
+            context.fillRect(0,0,500,500)
+            img.onload = function (){
+                var moveIndex = 0;
+                var timer = setInterval(function(){
+                    if(moveIndex > 10){
+                        moveIndex = 0;
+                    }
+                    var splitObj = new SplitImgObj();
+                    // var arr = splitObj.getArr();
+                    var index = splitObj.getStartIndex();
+                    for(; index < 60; index += 1 ){
+                        // 每当index > 12 时取index 除以12的余数后取整乘32
+                        var sourceX = Math.floor(index%12)*32;
+                        // 每当index  的值 大于12向下取整时数乘32 当index 为12时第一次进下第二列
+                        var sourceY = Math.floor(index/12)*32;
+                        context.drawImage(img,sourceX + moveIndex * 30,sourceY,30,30,sourceX + 50,sourceY + 50,30,30)
+                    }
+                    moveIndex += 1;
+                },300)
+            }
+
+        }, false);
+
+        function eventWindowLoaded(id) {
+            var theCanvas = document.getElementById(id);
+
+            var context = theCanvas.getContext('2d');
+
+            return context;
+        }
+
+
+
+        function CreateImg(Imgsrc){
+            var img = new Image();
+            img.src = Imgsrc;
+            function getImg(){
+                return img;
+            }
+            function setImg(src){
+                this.src = src;
+                return this;
+            }
+            return {
+                getImg: getImg,
+                setImg: setImg
+            }
+        }
+
+        function SplitImgObj(){
+            var arr = [0,1,2,3,4,5,6,7,8];
+            var startIndex = 0;
+
+
+            return {
+                getArr: function (){
+                    return arr;
+                },
+                setStartIndex: function (value) {
+                    startIndex = value;
+                    return this;
+                },
+                getStartIndex: function () {
+                    return startIndex;
+                }
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <div style="position:absolute;top:50px;left:50px;">
+        <canvas id="canvas" width="500px" height="500px"></canvas>
+        <canvas id="canvas1" width="500px" height="500px"></canvas>
+        <canvas id="canvas2" width="500px" height="500px"></canvas>
+        <canvas id="canvas3" width="500px" height="500px"></canvas>
+    </div>
+</body>
+</html>

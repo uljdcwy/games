@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+    <link rel="stylesheet" href="./css/common.css">
+</head>
+<body>
+    <h1>Canvas drawImage详解</h1>
+    <p>
+        Canvas中drawImage有三种使用方法
+        在使用drawImage时需要在调用方法之前使用 img.onload 方法来使图像加载完成
+        第一种只用三个参数
+        第一个参数为图片对象，第二个参数为X座标，第三个参数为Y座标
+        例：
+            context.drawImage(imageObj,x,y)//
+        第二种有五个参数 前三个与第一种的参数一样，第四种为图像的显示宽度，第五个为图像的显示高度
+            例：
+            context.drawImage(imageObj,x,y,imgWidth,imgHeight)
+        第三种是复制，有九个参数第一个参数同上第二个参数与第三个参数为源图像的x,y座标,
+        第四个参数与第五个参数为复制到新图像的宽度与高度
+        第六个参数与第七个参数,为新图像的x,y座标,
+        第八个参数与第九个参数为 新图像的宽度与高度
+         这里图像的座标位置为源图像的base64中设定的值
+        例：
+            context.drawImage(imageObj,oldImgX,oldImgY,oldImgCopyWidth,oldImgCopyHeight
+        ,newImgX,newImgY,newImgWidth,newImgHeight)
+    </p>
+</body>
+</html>
