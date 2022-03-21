@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+		</style>
+	</head>
+	<body>
+		<input type="range" id="canvasWidth" min="0" max="1000" step="1" value="500">
+		<input type="range" id="canvasHeight" min="0" max="1000" step="1" value="500">
+		<input type="range" id="ballCount" min="0" max="1000" step="1" value="500">
+		<canvas id="canvasSpeed" width="800px" height="800px" style="background-color: #ddd;"></canvas>
+		<script type="text/javascript">
+			
+			window.addEventListener('load',eventWindowLoaded,false);
+			var markTimeOut;
+			
+			function eventWindowLoaded(){
+				canvasApp(10);
+			};
+			var widRangeVal = document.getElementById("canvasWidth");
+			var heiRangeVal = document.getElementById("canvasHeight");
+			var ballCount = document.getElementById("ballCount");
+			var theCanvas = document.getElementById("canvasSpeed");
+			var ctx = theCanvas.getContext("2d");
+			widRangeVal.onchange = function(){
+				theCanvas.width = widRangeVal.value;
+				canvasApp(ballCount.value)
+			};
+			heiRangeVal.onchange = function(){
+				theCanvas.height = heiRangeVal.value;
+				canvasApp(ballCount.value)
+			}
+			ballCount.onchange = function(){
+				canvasApp(ballCount.value)
+			}
+			
+			function canvasApp(ballCount){
+				var markTab;
+				clearTimeout(markTimeOut);
+				function drawScreen(){
+					ctx.clearRect(0,0,theCanvas.width,theCanvas.height);
+					for(var i = 0; i < balls.length; i++){
+						var ball = balls[i];
+						ball.x += ball.xunits;
+						ball.y += ball.yunits;
+						ctx.beginPath();
+						ctx.fillStyle = "#000";
+						if(ball.angle == 0 || ball.angle == 90 || ball.angle == 180 || ball.angle == 270 || ball.angle == 360){
+							ball.angle += 15;
+							updateBall(ball);
+							ctx.fillStyle = "#f00";
+						}
+						ctx.arc(ball.x,ball.y,ball.radius,0,Math.PI*2,true);
+						ctx.closePath();
+						ctx.fill();
+						var widVal = (theCanvas.width - (ball.radius));
+						var minWidVal = (ball.radius );
+						var heiVal = (theCanvas.height - (ball.radius));
+						var minHeiVal = (ball.radius);
+						if((ball.x > widVal) || (ball.x<minWidVal)){
+							ball.angle = 180 - ball.angle;
+							if(ball.x<minWidVal) ball.x = minWidVal;
+							if(ball.x>widVal) ball.x = widVal;
+							updateBall(ball);
+							
+						}else if((ball.y>heiVal) || (ball.y<minHeiVal)){
+							ball.angle = 360 - ball.angle;
+							if(ball.y<minHeiVal) ball.y = minHeiVal;
+							if(ball.y>heiVal) ball.y = heiVal;
+							updateBall(ball);
+						}
+					}
+					
+				}
+				
+				function updateBall(ball){
+					radians = ball.angle * Math.PI/180;
+					ball.xunits = Math.cos(radians) * ball.speed;
+					ball.yunits = Math.sin(radians) * ball.speed;
+				}
+				var numBalls = ballCount || 100;
+				var maxSize = 8;
+				var minSize = 5;
+				var maxSpeed = maxSize + 5;
+				var balls = new Array();
+				var tempBall,tempX,tempY,tempSpeed,tempAngle,tempRadius,tempRadians,tempXunits,tempYunits;
+				
+				for(var i = 0; i < numBalls; i++){
+					tempRadius = Math.floor(Math.random() * maxSize) + minSize;
+					tempSpeed = maxSpeed - tempRadius;
+					tempAngle = Math.floor(Math.random()*(360));
+					tempRadians = tempAngle*Math.PI/180;
+					var maxSizeRudce = -(tempRadius*2) - tempSpeed;
+					tempX = tempRadius*2 + (Math.floor(Math.random()*theCanvas.width));
+					tempY = tempRadius*2 + (Math.floor(Math.random()*theCanvas.height))
+					var maxWid = (theCanvas.width - tempRadius);
+					var maxHei = (theCanvas.height - tempRadius);
+					
+					if(tempX<tempRadius) tempX = tempRadius;
+					if(tempX>maxWid) tempX = maxWid;
+					if(tempY<tempRadius) tempY = tempRadius;
+					if(tempY>maxHei) tempY = maxHei;
+					
+					tempXunits = Math.cos(tempRadians)*tempSpeed;
+					tempYunits = Math.sin(tempRadians)*tempSpeed;
+					tempBall = {
+						x: tempX,
+						y: tempY,
+						radius: tempRadius,
+						speed: tempSpeed,
+						angle: tempAngle,
+						xunits: tempXunits,
+						yunits: tempYunits,
+					}
+					balls.push(tempBall);
+				}
+				
+				
+				
+				ctx.fillStyle = "#eee";
+				ctx.fillRect(0,0,theCanvas.width,theCanvas.height);
+				ctx.strokeStyle = "#000"
+				ctx.strokeRect(0,0,theCanvas.width - 2,theCanvas.height - 2);
+				
+				function gameLoop(){
+					markTimeOut = setTimeout(gameLoop,20);
+					drawScreen();
+				};
+				gameLoop();
+			}
+			
+			
+			
+		</script>
+	</body>
+</html>
